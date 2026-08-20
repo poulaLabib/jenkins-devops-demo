@@ -61,14 +61,13 @@ pipeline {
             steps {
                 echo 'Deploying to EC2...'
                 sshagent(credentials: ['ec2-ssh-key']) {
-                    sh '''
+                    sh """
                         ssh -o StrictHostKeyChecking=no ${EC2_HOST} '
                             docker pull ${IMAGE_NAME}:latest &&
-                            docker stop jenkins-demo-app || true &&
-                            docker rm jenkins-demo-app || true &&
+                            docker rm -f jenkins-demo-app || true &&
                             docker run -d -p 8080:8080 --name jenkins-demo-app ${IMAGE_NAME}:latest
                         '
-                    '''
+                    """
                 }
             }
         }
