@@ -26,6 +26,13 @@ pipeline {
                 sh 'mvn test'
             }
         }
+
+        stage('Docker Build') {
+            steps {
+                echo 'Building Docker image...'
+                sh 'docker build -t jenkins-demo:${BUILD_NUMBER} .'
+            }
+        }
     }
 
     post {
